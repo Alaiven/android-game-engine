@@ -12,11 +12,17 @@ public class GuardedArrayList<E> extends ArrayList<E> {
 
     public GuardedArrayList(){
         super();
-        GuardedObject.staticGuard(this);
+        GuardedObject.staticInitGuard(this);
     }
 
     public GuardedArrayList(Collection<? extends E> collection){
         super(collection);
-        GuardedObject.staticGuard(this);
+        GuardedObject.staticInitGuard(this);
+    }
+
+    @Override
+    protected void finalize() throws Throwable {
+        super.finalize();
+        GuardedObject.staticExitGuard(this);
     }
 }

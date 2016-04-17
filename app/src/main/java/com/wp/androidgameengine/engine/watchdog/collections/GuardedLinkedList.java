@@ -12,11 +12,16 @@ public class GuardedLinkedList<E> extends LinkedList<E> {
 
     public GuardedLinkedList() {
         super();
-        GuardedObject.staticGuard();
+        GuardedObject.staticInitGuard(this);
     }
 
     public GuardedLinkedList(Collection<? extends E> collection){
         super(collection);
-        GuardedObject.staticGuard();
+        GuardedObject.staticInitGuard(this);
+    }
+
+    protected void finalize() throws Throwable{
+        super.finalize();
+        GuardedObject.staticExitGuard(this);
     }
 }

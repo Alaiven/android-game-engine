@@ -22,16 +22,29 @@ public class GuardedObject {
     }
 
     public GuardedObject(){
-        log(this);
+        logInit(this);
     }
 
-    public static void staticGuard(Object obj){
-        log(obj);
+    protected void finalize() throws Throwable{
+        super.finalize();
+        logFinilize(this);
     }
 
-    private static void log(Object obj){
+    public static void staticInitGuard(Object obj){
+        logInit(obj);
+    }
+
+    public static void staticExitGuard(Object obj) { logFinilize(obj);}
+
+    private static void logInit(Object obj){
         if(GuardedObject.isActive) {
             Log.e("===INIT WATCHDOG===", String.format("Initialized %s object!", obj.getClass().getSimpleName()));
+        }
+    }
+
+    private static void logFinilize(Object obj){
+        if(GuardedObject.isActive) {
+            Log.e("===EXIT WATCHDOG===", String.format("Finalized %s object!", obj.getClass().getSimpleName()));
         }
     }
 }
