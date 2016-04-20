@@ -8,9 +8,9 @@ import com.wp.androidgameengine.engine.watchdog.collections.GuardedArrayList;
 import java.util.Objects;
 
 /**
- * This is the object initialization watchdog. It logs every object initialization where the flag
- * is set to True. Every object in the ingine should derive from this class, or call
- * staticguard method (For API classes). When deriving, all classes should call super() in
+ * This is the object initialization watchdog. It logs every object initialization when the flag
+ * is set to True. Every object in the engine should derive from this class, or call
+ * staticGuard method (For API classes). When deriving, all classes should call super() in
  * constructors.
  */
 public class GuardedObject {
