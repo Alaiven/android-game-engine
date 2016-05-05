@@ -32,6 +32,11 @@ public class ThreadCommunicator extends GuardedObject {
         return consumerQueue.poll();
     }
 
+    public Boolean IsConsumeEmpty(){
+        return consumerQueue.size() == 0;
+    }
+
+
     public void SwapBuffers(){
         Queue<RenderingObject> auxQueue = consumerQueue;
         consumerQueue = producerQueue;

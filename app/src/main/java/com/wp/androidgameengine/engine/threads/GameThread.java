@@ -14,5 +14,6 @@ public class GameThread extends BaseThread {
     @Override
     public void doLoopAction() {
 
+
     }
 }

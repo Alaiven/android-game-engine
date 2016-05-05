@@ -11,6 +11,8 @@ import android.widget.Toast;
 
 import com.wp.androidgameengine.engine.renderer.MainRenderer;
 import com.wp.androidgameengine.engine.surface.MainSurfaceView;
+import com.wp.androidgameengine.engine.threads.GameThread;
+import com.wp.androidgameengine.engine.threads.ThreadCommunicator;
 
 import java.io.IOException;
 
@@ -32,7 +34,12 @@ public class MainActivity extends AppCompatActivity {
         boolean supportES2 = true; //FOR EMULATOR!
 
         if(supportES2){
-            MainRenderer mainRenderer = new MainRenderer();
+
+            ThreadCommunicator tc = new ThreadCommunicator();
+
+            new Thread(new GameThread(tc)).start();
+
+            MainRenderer mainRenderer = new MainRenderer(tc);
 
             mainSurfaceView.setEGLContextClientVersion(2);
             mainSurfaceView.setEGLConfigChooser(8, 8, 8, 8, 16, 0);
