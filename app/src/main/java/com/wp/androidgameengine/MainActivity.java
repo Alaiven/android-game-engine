@@ -3,6 +3,7 @@ package com.wp.androidgameengine;
 import android.app.ActivityManager;
 import android.content.Context;
 import android.content.pm.ConfigurationInfo;
+import android.opengl.GLSurfaceView;
 import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -39,10 +40,10 @@ public class MainActivity extends AppCompatActivity {
 
             new Thread(new GameThread(tc)).start();
 
-            MainRenderer mainRenderer = new MainRenderer(tc);
+            MainRenderer mainRenderer = new MainRenderer(tc, this);
 
             mainSurfaceView.setEGLContextClientVersion(2);
-            mainSurfaceView.setEGLConfigChooser(8, 8, 8, 8, 16, 0);
+           // mainSurfaceView.setRenderMode(GLSurfaceView.RENDERMODE_CONTINUOUSLY);
             mainSurfaceView.setRenderer(mainRenderer);
             this.setContentView(mainSurfaceView);
 
