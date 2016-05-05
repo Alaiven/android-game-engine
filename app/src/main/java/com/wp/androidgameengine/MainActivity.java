@@ -38,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
 
             ThreadCommunicator tc = new ThreadCommunicator();
 
-            new Thread(new GameThread(tc)).start();
+            new Thread(new GameThread(tc, this)).start();
 
             MainRenderer mainRenderer = new MainRenderer(tc, this);
 

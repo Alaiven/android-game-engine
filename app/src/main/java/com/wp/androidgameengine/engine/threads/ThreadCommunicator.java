@@ -33,11 +33,11 @@ public class ThreadCommunicator extends GuardedObject {
     }
 
     public Boolean IsConsumeEmpty(){
-        return consumerQueue.size() == 0;
+        return consumerQueue.isEmpty();
     }
 
 
-    public void SwapBuffers(){
+    public synchronized void SwapBuffers(){
         Queue<RenderingObject> auxQueue = consumerQueue;
         consumerQueue = producerQueue;
         producerQueue = auxQueue;

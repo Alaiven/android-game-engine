@@ -152,9 +152,17 @@ public class MainRenderer implements GLSurfaceView.Renderer {
     public void onDrawFrame(GL10 gl) {
         GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT | GLES20.GL_DEPTH_BUFFER_BIT);
 
-//        while(!tc.IsConsumeEmpty()) {
-//            RenderingObject ro = tc.Consume();
-//        }
+        tc.SwapBuffers();
+
+        RenderingObject ro = null;
+
+        while(!tc.IsConsumeEmpty()) {
+           ro = tc.Consume();
+        }
+
+        if(ro == null){
+            return;
+        }
 
         // get the position of our attributes
         int aPosition = GLES20.glGetAttribLocation(programHandle, "aPosition");
@@ -174,16 +182,16 @@ public class MainRenderer implements GLSurfaceView.Renderer {
         // and take a look at the result.
         float[] data =
                 {
-                        50f, 50f,  //V1
+                        ro.getX(), ro.getY(),  //V1
                         0f, 0f,     //Texture coordinate for V1
 
-                        50f, 82f,  //V2
+                        ro.getX(), ro.getY() + ro.getWidth(),  //V2
                         0f,  1f,
 
-                        82f, 50f, //V3
+                        ro.getX() + ro.getHeight(), ro.getY(), //V3
                         1f, 0f,
 
-                        82f, 82f,  //V4
+                        ro.getX() + ro.getHeight(), ro.getY() + ro.getWidth(),  //V4
                         1f, 1f
                 };
 
