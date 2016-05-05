@@ -14,6 +14,8 @@ import com.wp.androidgameengine.engine.threads.ThreadCommunicator;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
+import java.util.Dictionary;
+import java.util.HashMap;
 
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
@@ -36,9 +38,14 @@ public class MainRenderer implements GLSurfaceView.Renderer {
         this.ha = hostActivity;
     }
 
+    //Wymyslic co z tym zrobic najlepiej z wzorcami zeby cos bylo xD
+    private HashMap<Integer, Bitmap> textureDictionary;
+
 
     @Override
     public void onSurfaceCreated(GL10 gl, EGLConfig config) {
+        textureDictionary = new HashMap<>();
+
         // first, try to generate a texture handle
         GLES20.glGenTextures(1, textures, 0);
 
@@ -55,6 +62,8 @@ public class MainRenderer implements GLSurfaceView.Renderer {
         Bitmap b = BitmapFactory.decodeResource(ha.getResources(), R.drawable.dragon);
         GLUtils.texImage2D(GLES20.GL_TEXTURE_2D, 0, b, 0);
         b.recycle();
+
+        textureDictionary.put(R.drawable.dragon, b);
     }
 
     @Override
