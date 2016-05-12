@@ -19,6 +19,9 @@ public class ThreadCommunicator extends GuardedObject {
     private Queue<RenderingObject> producerQueue;
     private Queue<RenderingObject> consumerQueue;
 
+    private Boolean swappingFlag = true;
+
+
     public ThreadCommunicator(){
         consumerQueue = new GuardedLinkedList<>();
         producerQueue = new GuardedLinkedList<>();
@@ -36,11 +39,20 @@ public class ThreadCommunicator extends GuardedObject {
         return consumerQueue.isEmpty();
     }
 
+    public Boolean IsFrameConsumed(){
+        return swappingFlag;
+    }
+
+    public void setSwappingFlag(Boolean swappingFlag) {
+        this.swappingFlag = swappingFlag;
+    }
 
     public synchronized void SwapBuffers(){
         Queue<RenderingObject> auxQueue = consumerQueue;
         consumerQueue = producerQueue;
         producerQueue = auxQueue;
+
+        swappingFlag = true;
     }
 
 }

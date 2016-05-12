@@ -14,6 +14,7 @@ import com.wp.androidgameengine.engine.renderer.MainRenderer;
 import com.wp.androidgameengine.engine.surface.MainSurfaceView;
 import com.wp.androidgameengine.engine.threads.GameThread;
 import com.wp.androidgameengine.engine.threads.ThreadCommunicator;
+import com.wp.androidgameengine.engine.watchdog.collections.GuardedArrayList;
 
 import java.io.IOException;
 
@@ -41,6 +42,12 @@ public class MainActivity extends AppCompatActivity {
             new Thread(new GameThread(tc, this)).start();
 
             MainRenderer mainRenderer = new MainRenderer(tc, this);
+
+            GuardedArrayList<Integer> initList = new GuardedArrayList<>();
+            initList.add(R.drawable.dragon);
+            initList.add(R.drawable.back);
+
+            mainRenderer.init(initList);
 
             mainSurfaceView.setEGLContextClientVersion(2);
            // mainSurfaceView.setRenderMode(GLSurfaceView.RENDERMODE_CONTINUOUSLY);

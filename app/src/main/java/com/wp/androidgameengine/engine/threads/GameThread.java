@@ -1,35 +1,34 @@
 package com.wp.androidgameengine.engine.threads;
 
 import android.app.Activity;
+import android.text.util.Linkify;
 
 import com.wp.androidgameengine.R;
 import com.wp.androidgameengine.engine.RenderingObject;
 
-/**
- * Created by maciek on 20.04.16.
- */
 public class GameThread extends BaseThread {
 
     private final Activity ha;
 
-    public GameThread(ThreadCommunicator tc, Activity hostActivity){
-
+    public GameThread(ThreadCommunicator tc, Activity hostActivity) {
         super(tc);
         this.ha = hostActivity;
-
-
     }
-
-
-    RenderingObject ro = new RenderingObject(50,50,32,32, R.drawable.dragon);
 
     @Override
     public void doLoopAction() {
 
-        ro.setX((float)Math.random() * 100);
-        ro.setY((float)Math.random() * 100);
+        if (threadCommunicator.IsFrameConsumed()) {
 
-        threadCommunicator.Produce(ro);
 
+            threadCommunicator.setSwappingFlag(false);
+
+            for (int i = 0; i < 100; i++) {
+                RenderingObject ro = new RenderingObject((float)Math.random() * 400, (float)Math.random() * 400, 32, 32, R.drawable.dragon);
+                RenderingObject ro1 = new RenderingObject((float)Math.random() * 400, (float)Math.random() * 400, 32, 32, R.drawable.back);
+                threadCommunicator.Produce(ro);
+                threadCommunicator.Produce(ro1);
+            }
+        }
     }
 }
