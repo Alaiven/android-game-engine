@@ -15,7 +15,6 @@ import java.util.Queue;
  */
 public class ThreadCommunicator extends GuardedObject {
 
-
     private Queue<Texture> producerQueue;
     private Queue<Texture> consumerQueue;
 

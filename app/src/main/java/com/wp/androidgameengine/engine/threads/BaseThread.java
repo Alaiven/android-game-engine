@@ -1,5 +1,6 @@
 package com.wp.androidgameengine.engine.threads;
 
+import com.wp.androidgameengine.engine.threads.ThreadCommunicator;
 import com.wp.androidgameengine.engine.watchdog.GuardedObject;
 
 /**
@@ -8,9 +9,13 @@ import com.wp.androidgameengine.engine.watchdog.GuardedObject;
 public abstract class BaseThread extends GuardedObject implements Runnable {
 
 
-    protected final ThreadCommunicator threadCommunicator;
+    protected ThreadCommunicator threadCommunicator;
     private boolean enabled = true;
     private boolean stop = false;
+
+    public void setThreadCommunicator(ThreadCommunicator threadCommunicator) {
+        this.threadCommunicator = threadCommunicator;
+    }
 
     public void setEnabled(boolean enabled) {
         this.enabled = enabled;
@@ -20,9 +25,8 @@ public abstract class BaseThread extends GuardedObject implements Runnable {
         this.stop = stop;
     }
 
-    public BaseThread(ThreadCommunicator tc){
+    public BaseThread(){
         super();
-        this.threadCommunicator = tc;
     }
 
     @Override

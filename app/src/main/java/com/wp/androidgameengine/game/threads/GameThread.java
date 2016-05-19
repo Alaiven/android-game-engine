@@ -1,18 +1,18 @@
-package com.wp.androidgameengine.engine.threads;
+package com.wp.androidgameengine.game.threads;
 
 import android.app.Activity;
 
 import com.wp.androidgameengine.R;
 import com.wp.androidgameengine.engine.objects.Texture;
+import com.wp.androidgameengine.engine.threads.BaseThread;
+import com.wp.androidgameengine.engine.threads.ThreadCommunicator;
 
 
 public class GameThread extends BaseThread {
 
-    private final Activity ha;
 
-    public GameThread(ThreadCommunicator tc, Activity hostActivity) {
-        super(tc);
-        this.ha = hostActivity;
+    public GameThread() {
+        super();
     }
 
     @Override

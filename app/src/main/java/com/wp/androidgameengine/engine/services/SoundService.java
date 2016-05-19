@@ -9,6 +9,7 @@ import android.widget.Toast;
 import com.wp.androidgameengine.engine.objects.Sound;
 import com.wp.androidgameengine.engine.watchdog.GuardedObject;
 
+import java.util.ArrayList;
 import java.util.Dictionary;
 import java.util.HashMap;
 
@@ -22,26 +23,21 @@ public class SoundService extends GuardedObject {
 
     private final HashMap<Integer, Integer> soundDictionary;
 
-    private static SoundService instance;
-
-    public static SoundService getService(Context c) {
-        if(instance != null){
-            return instance;
-        }else{
-            instance = new SoundService(c);
-            return instance;
-        }
-    }
-
-    private SoundService(Context c) {
+    public SoundService(Context c) {
         super();
         context = c;
         sp = new SoundPool(10, AudioManager.STREAM_MUSIC, 0);
         soundDictionary = new HashMap<>();
     }
 
-    public void loadSound(Sound s){
-        soundDictionary.put(s.getSoundId(), sp.load(context, s.getSoundId(), 1));
+    public void init(ArrayList<Integer> sounds){
+        for (Integer i: sounds) {
+            loadSound(i);
+        }
+    }
+
+    private void loadSound(Integer soundId){
+        soundDictionary.put(soundId, sp.load(context, soundId, 1));
     }
 
     public void playSound(Sound s){

@@ -1,6 +1,7 @@
 package com.wp.androidgameengine.engine.renderer;
 
 import android.app.Activity;
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.opengl.GLES20;
@@ -15,6 +16,7 @@ import com.wp.androidgameengine.engine.watchdog.collections.GuardedArrayList;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import javax.microedition.khronos.egl.EGLConfig;
@@ -29,7 +31,7 @@ public class MainRenderer implements GLSurfaceView.Renderer {
     private final int POSITION_OFFSET = 0;
     private final int TEXTURE_OFFSET = 2;
 
-    private final Activity ha;
+    private final Context context;
     private int vertexHandle;
     private int fragmentHandle;
     private int programHandle = -1;
@@ -38,20 +40,20 @@ public class MainRenderer implements GLSurfaceView.Renderer {
 
     private final ThreadCommunicator tc;
 
-    public MainRenderer(ThreadCommunicator tc, Activity hostActivity) {
+    public MainRenderer(ThreadCommunicator tc, Context c) {
         this.tc = tc;
-        this.ha = hostActivity;
+        this.context = c;
         textureDictionary = new HashMap<>();
     }
 
-    private GuardedArrayList<Integer> textureInitializationList;
+    private ArrayList<Integer> textureInitializationList;
 
     //Dictionary R.id -> texture id
     private final HashMap<Integer, Integer> textureDictionary;
 
 
     //Texture pre initialization. Textures will be loaded accirdingly in onSurfaceCreated
-    public void init(GuardedArrayList<Integer> textureInitializationList){
+    public void init(ArrayList<Integer> textureInitializationList){
         this.textureInitializationList = textureInitializationList;
         this.initialized = true;
     }
@@ -239,7 +241,7 @@ public class MainRenderer implements GLSurfaceView.Renderer {
             options.inScaled = false;   // No pre-scaling
 
             // Read in the resource
-            final Bitmap bitmap = BitmapFactory.decodeResource(this.ha.getResources(), resourceId, options);
+            final Bitmap bitmap = BitmapFactory.decodeResource(this.context.getResources(), resourceId, options);
 
             // Bind to the texture in OpenGL
             GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, textureHandle[0]);
