@@ -14,7 +14,7 @@ public class Layer extends GuardedObject {
     private Texture textures[];
     private Texture sampleTexture;
     private Boolean dynamicLayerFlag;
-    private int TexturesCount;
+    private int texturesCount;
 
     public Layer(int layerID, float deviceWidth, float deviceHeight, Texture[] textures, Boolean dynamicLayerFlag) {
         super();
@@ -27,7 +27,16 @@ public class Layer extends GuardedObject {
         sampleTexture = textures[0];
         layerWidth = deviceWidth + 4*sampleTexture.getWidth();
         layerHeight = sampleTexture.getHeight();
+
+        //texturesCountFunction(layerWidth,sampleTexture.getWidth());
+
     }
+    /*
+    private float texturesCountFunction(float layerWidth, float textureWidth){
+        Roun
+        return layerWidth/textureWidth
+    }
+    */
 
     public int getLayerID() {
         return layerID;
