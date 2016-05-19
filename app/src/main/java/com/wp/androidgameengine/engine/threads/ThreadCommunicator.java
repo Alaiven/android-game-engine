@@ -1,6 +1,6 @@
 package com.wp.androidgameengine.engine.threads;
 
-import com.wp.androidgameengine.engine.Texture;
+import com.wp.androidgameengine.engine.objects.Texture;
 import com.wp.androidgameengine.engine.watchdog.GuardedObject;
 import com.wp.androidgameengine.engine.watchdog.collections.GuardedLinkedList;
 

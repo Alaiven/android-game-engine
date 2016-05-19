@@ -3,7 +3,7 @@ package com.wp.androidgameengine.engine.threads;
 import android.app.Activity;
 
 import com.wp.androidgameengine.R;
-import com.wp.androidgameengine.engine.Texture;
+import com.wp.androidgameengine.engine.objects.Texture;
 
 public class GameThread extends BaseThread {
 

@@ -8,7 +8,7 @@ import android.opengl.GLSurfaceView;
 import android.opengl.GLUtils;
 import android.util.Log;
 
-import com.wp.androidgameengine.engine.Texture;
+import com.wp.androidgameengine.engine.objects.Texture;
 import com.wp.androidgameengine.engine.threads.ThreadCommunicator;
 import com.wp.androidgameengine.engine.watchdog.collections.GuardedArrayList;
 

@@ -1,4 +1,4 @@
-package com.wp.androidgameengine.engine;
+package com.wp.androidgameengine.engine.objects;
 
 import com.wp.androidgameengine.engine.watchdog.GuardedObject;
 
@@ -55,6 +55,7 @@ public class Texture extends GuardedObject {
     }
 
     public Texture(float x, float y, float width, float height, int textureId) {
+        super();
         this.x = x;
         this.y = y;
         this.width = width;

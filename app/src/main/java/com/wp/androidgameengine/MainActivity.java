@@ -3,12 +3,9 @@ package com.wp.androidgameengine;
 import android.app.ActivityManager;
 import android.content.Context;
 import android.content.pm.ConfigurationInfo;
-import android.opengl.GLSurfaceView;
-import android.os.Environment;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.wp.androidgameengine.engine.renderer.MainRenderer;
 import com.wp.androidgameengine.engine.surface.MainSurfaceView;
@@ -16,8 +13,6 @@ import com.wp.androidgameengine.engine.threads.GameThread;
 import com.wp.androidgameengine.engine.threads.ThreadCommunicator;
 import com.wp.androidgameengine.engine.watchdog.GuardedObject;
 import com.wp.androidgameengine.engine.watchdog.collections.GuardedArrayList;
-
-import java.io.IOException;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -45,8 +40,11 @@ public class MainActivity extends AppCompatActivity {
             MainRenderer mainRenderer = new MainRenderer(tc, this);
 
             GuardedArrayList<Integer> initList = new GuardedArrayList<>();
+
+            //tablica stringow
             initList.add(R.drawable.dragon);
             initList.add(R.drawable.back);
+
 
             mainRenderer.init(initList);
 
