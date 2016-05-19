@@ -44,7 +44,7 @@ public class SoundService extends GuardedObject {
         sp.play(soundDictionary.get(s.getSoundId()), 1, 1, 1, 0, 1.0f);
     }
 
-    public void destroy(){
+    public void onDestroy(){
         sp.release();
     }
 

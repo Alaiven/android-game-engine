@@ -20,32 +20,28 @@ import com.wp.androidgameengine.engine.watchdog.collections.GuardedArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
-    private MainSurfaceView mainSurfaceView;
-
+    private Game game;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //setContentView(R.layout.activity_main);
-        mainSurfaceView = new MainSurfaceView(this);
 
         setVolumeControlStream(AudioManager.STREAM_MUSIC);
 
         ActivityManager am = (ActivityManager)getSystemService(Context.ACTIVITY_SERVICE);
         ConfigurationInfo info = am.getDeviceConfigurationInfo();
 
-        //boolean supportES2 = (info.reqGlEsVersion >= 0x20000);
+        boolean supportES2 = (info.reqGlEsVersion >= 0x20000);
 
-        boolean supportES2 = true; //FOR EMULATOR!
+        //boolean supportES2 = true; //FOR EMULATOR!
 
         if(supportES2){
 
-            Game game = new Game(this);
+            game = new Game(this);
 
-            mainSurfaceView.setEGLContextClientVersion(2);
-            //mainSurfaceView.setRenderMode(GLSurfaceView.RENDERMODE_CONTINUOUSLY);
-            mainSurfaceView.setRenderer(game.getRenderer());
-            this.setContentView(mainSurfaceView);
+            this.setContentView(game.getView());
+
+            game.init();
 
             GuardedObject.setIsActive(false);
 
@@ -59,18 +55,19 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume()
     {
         super.onResume();
-        mainSurfaceView.onResume();
+        game.onResume();
     }
 
     @Override
     protected void onPause()
     {
         super.onPause();
-        mainSurfaceView.onPause();
+        game.onPause();
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        game.onDestroy();
     }
 }

@@ -12,6 +12,7 @@ public abstract class BaseThread extends GuardedObject implements Runnable {
     protected ThreadCommunicator threadCommunicator;
     private boolean enabled = true;
     private boolean stop = false;
+    private boolean pause = false;
 
     public void setThreadCommunicator(ThreadCommunicator threadCommunicator) {
         this.threadCommunicator = threadCommunicator;
@@ -31,7 +32,7 @@ public abstract class BaseThread extends GuardedObject implements Runnable {
 
     @Override
     public void run(){
-        while(!stop){
+        while(!stop && !pause){
             try {
                 Thread.sleep(10);
             }catch (InterruptedException e){
@@ -44,5 +45,14 @@ public abstract class BaseThread extends GuardedObject implements Runnable {
     }
 
     public abstract void doLoopAction();
+
+    public void onPause(){
+        pause = true;
+    }
+
+    public void onResume(){
+        pause = false;
+    }
+
 
 }

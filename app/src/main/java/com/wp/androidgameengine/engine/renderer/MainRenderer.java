@@ -316,4 +316,12 @@ public class MainRenderer implements GLSurfaceView.Renderer {
         }
     }
 
+    public void onPause(){
+
+    }
+
+    public void onResume(){
+
+    }
+
 }
