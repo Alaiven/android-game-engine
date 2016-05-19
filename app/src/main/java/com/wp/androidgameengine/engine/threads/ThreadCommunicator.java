@@ -1,6 +1,6 @@
 package com.wp.androidgameengine.engine.threads;
 
-import com.wp.androidgameengine.engine.RenderingObject;
+import com.wp.androidgameengine.engine.Texture;
 import com.wp.androidgameengine.engine.watchdog.GuardedObject;
 import com.wp.androidgameengine.engine.watchdog.collections.GuardedLinkedList;
 
@@ -16,8 +16,8 @@ import java.util.Queue;
 public class ThreadCommunicator extends GuardedObject {
 
 
-    private Queue<RenderingObject> producerQueue;
-    private Queue<RenderingObject> consumerQueue;
+    private Queue<Texture> producerQueue;
+    private Queue<Texture> consumerQueue;
 
     private Boolean swappingFlag = true;
 
@@ -27,11 +27,11 @@ public class ThreadCommunicator extends GuardedObject {
         producerQueue = new GuardedLinkedList<>();
     }
 
-    public void Produce(RenderingObject obj){
+    public void Produce(Texture obj){
         producerQueue.add(obj);
     }
 
-    public RenderingObject Consume(){
+    public Texture Consume(){
         return consumerQueue.poll();
     }
 
@@ -48,7 +48,7 @@ public class ThreadCommunicator extends GuardedObject {
     }
 
     public synchronized void SwapBuffers(){
-        Queue<RenderingObject> auxQueue = consumerQueue;
+        Queue<Texture> auxQueue = consumerQueue;
         consumerQueue = producerQueue;
         producerQueue = auxQueue;
 

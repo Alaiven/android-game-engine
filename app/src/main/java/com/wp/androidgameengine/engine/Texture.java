@@ -7,7 +7,7 @@ import com.wp.androidgameengine.engine.watchdog.GuardedObject;
  *
  * Dummy object for further development, aimed for storing data needed for rendering.
  */
-public class RenderingObject extends GuardedObject {
+public class Texture extends GuardedObject {
     private float x;
     private float y;
     private float width;
@@ -54,7 +54,7 @@ public class RenderingObject extends GuardedObject {
         this.textureId = textureId;
     }
 
-    public RenderingObject(float x, float y, float width, float height, int textureId) {
+    public Texture(float x, float y, float width, float height, int textureId) {
         this.x = x;
         this.y = y;
         this.width = width;

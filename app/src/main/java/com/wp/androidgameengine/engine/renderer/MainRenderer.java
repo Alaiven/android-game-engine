@@ -1,7 +1,6 @@
 package com.wp.androidgameengine.engine.renderer;
 
 import android.app.Activity;
-import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.opengl.GLES20;
@@ -9,17 +8,14 @@ import android.opengl.GLSurfaceView;
 import android.opengl.GLUtils;
 import android.util.Log;
 
-import com.wp.androidgameengine.R;
-import com.wp.androidgameengine.engine.RenderingObject;
+import com.wp.androidgameengine.engine.Texture;
 import com.wp.androidgameengine.engine.threads.ThreadCommunicator;
 import com.wp.androidgameengine.engine.watchdog.collections.GuardedArrayList;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
-import java.util.Dictionary;
 import java.util.HashMap;
-import java.util.List;
 
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
@@ -107,7 +103,7 @@ public class MainRenderer implements GLSurfaceView.Renderer {
         GLES20.glEnable(GLES20.GL_BLEND);
     }
 
-    RenderingObject ro = null;
+    Texture ro = null;
 
     @Override
     public void onDrawFrame(GL10 gl) {

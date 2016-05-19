@@ -1,10 +1,9 @@
 package com.wp.androidgameengine.engine.threads;
 
 import android.app.Activity;
-import android.text.util.Linkify;
 
 import com.wp.androidgameengine.R;
-import com.wp.androidgameengine.engine.RenderingObject;
+import com.wp.androidgameengine.engine.Texture;
 
 public class GameThread extends BaseThread {
 
@@ -24,8 +23,8 @@ public class GameThread extends BaseThread {
             threadCommunicator.setSwappingFlag(false);
 
             for (int i = 0; i < 100; i++) {
-                RenderingObject ro = new RenderingObject((float)Math.random() * 400, (float)Math.random() * 400, 32, 32, R.drawable.dragon);
-                RenderingObject ro1 = new RenderingObject((float)Math.random() * 400, (float)Math.random() * 400, 32, 32, R.drawable.back);
+                Texture ro = new Texture((float)Math.random() * 400, (float)Math.random() * 400, 32, 32, R.drawable.dragon);
+                Texture ro1 = new Texture((float)Math.random() * 400, (float)Math.random() * 400, 32, 32, R.drawable.back);
                 threadCommunicator.Produce(ro);
                 threadCommunicator.Produce(ro1);
             }

@@ -14,6 +14,7 @@ import com.wp.androidgameengine.engine.renderer.MainRenderer;
 import com.wp.androidgameengine.engine.surface.MainSurfaceView;
 import com.wp.androidgameengine.engine.threads.GameThread;
 import com.wp.androidgameengine.engine.threads.ThreadCommunicator;
+import com.wp.androidgameengine.engine.watchdog.GuardedObject;
 import com.wp.androidgameengine.engine.watchdog.collections.GuardedArrayList;
 
 import java.io.IOException;
@@ -53,6 +54,8 @@ public class MainActivity extends AppCompatActivity {
            // mainSurfaceView.setRenderMode(GLSurfaceView.RENDERMODE_CONTINUOUSLY);
             mainSurfaceView.setRenderer(mainRenderer);
             this.setContentView(mainSurfaceView);
+
+            GuardedObject.setIsActive(true);
 
         }else{
             Log.e("OpenGLES 2", "Your device doesn't support ES2");
