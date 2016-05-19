@@ -5,6 +5,7 @@ import android.app.Activity;
 import com.wp.androidgameengine.R;
 import com.wp.androidgameengine.engine.objects.Texture;
 
+
 public class GameThread extends BaseThread {
 
     private final Activity ha;
