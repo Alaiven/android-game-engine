@@ -12,6 +12,16 @@ public abstract class GameObject extends GuardedObject {
         return items;
     }
 
+    public void addItem(GameObject item){
+        items.add(item);
+    }
+
+    public void addItem(GameObject ... items){
+        for (GameObject item : items){
+             this.items.add(item);
+        }
+    }
+
     public GameObject(){
         super();
         items = new GuardedArrayList<>();
