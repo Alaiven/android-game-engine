@@ -4,13 +4,15 @@ import com.wp.androidgameengine.engine.threads.ThreadCommunicator;
 import com.wp.androidgameengine.engine.watchdog.collections.GuardedLinkedList;
 
 import java.util.Queue;
+import java.util.Random;
 
 /**
  * Created by Rafał on 19.05.2016.
  */
 public class DynamicLayer extends Layer {
 
-    public Queue<TextureLayer> myQueue = new GuardedLinkedList<TextureLayer>();
+    private Queue<TextureLayer> myQueue = new GuardedLinkedList<TextureLayer>();
+    Random randomGenerator;
 
     public DynamicLayer(int layerID, float deviceWidth, float deviceHeight, float layerWidth, float layerHeight, TextureLayer[] textures, float pxMS) {
         super(layerID, deviceWidth, deviceHeight, layerWidth, layerHeight, textures, pxMS);
@@ -19,7 +21,7 @@ public class DynamicLayer extends Layer {
         // queue = new guarded list
         //linkedlist z funkcji
 
-        probabilityFunction(getTextures().length);
+        randomGenerator = new Random();
 
         for(int i=0; i <textures.length; i++)
             myQueue.offer(textures[i]);
@@ -27,12 +29,23 @@ public class DynamicLayer extends Layer {
 
 
 
-    public int probabilityFunction(int texturesSize){
+    private TextureLayer getNextTexture(){
 
-        // RANDOM PO WIELKOSCI TABLICY
-        // PRZYKLAD 5 TEXTUR KAZDA MA SWOJE PRAWDOPODOBIENSTWO
+        TextureLayer resultTexture = null;
 
-        return 0;
+        float acc = 0f;
+
+        float random = randomGenerator.nextFloat();
+
+        for (TextureLayer tl: getTextures()) {
+            acc += tl.getProbability();
+            if(acc >= random){
+                resultTexture = tl;
+                break;
+            }
+        }
+
+        return resultTexture;
     }
 
     @Override

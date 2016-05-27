@@ -40,7 +40,7 @@ public abstract class Layer extends GameObject {
     @Override
     protected abstract void onUpdate(long timeDelta, ThreadCommunicator tc);
 
-    public Texture[] getTextures() {
+    public TextureLayer[] getTextures() {
         return textures;
     }
 
