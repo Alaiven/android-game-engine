@@ -17,13 +17,13 @@ public abstract class GameObject extends GuardedObject {
         items = new GuardedArrayList<>();
     }
 
-    public void update(int timeDelta, ThreadCommunicator tc){
+    public void update(long timeDelta, ThreadCommunicator tc){
         for (GameObject go: items) {
             go.onUpdate(timeDelta, tc);
             go.update(timeDelta, tc);
         }
     }
 
-    public abstract void onUpdate(int timeDelta, ThreadCommunicator tc);
+    protected abstract void onUpdate(long timeDelta, ThreadCommunicator tc);
 
 }
