@@ -130,7 +130,7 @@ public class MainRenderer implements GLSurfaceView.Renderer {
             // First of all, our image is a rectangle right? but in OpenGL, we can only draw
             // triangles! To remedy that we will use 4 vertices (V1 to V4) and draw using
             // the TRIANGLE_STRIP option. If you look closely to our positions, you will note
-            // that we're drawing a 'N' (or 'Z') shaped line... and TRIANGLE_STRIP 'closes' the
+            // that we're drawing a 'N' (or 'Z') shaped line1... and TRIANGLE_STRIP 'closes' the
             // remaining GAP between the vertices, so we have a rectangle (or square)! Yay!
             //
             // Apart from V1 to V4, we also specify the position IN THE TEXTURE. Each vertex

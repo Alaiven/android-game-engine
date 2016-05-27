@@ -16,7 +16,7 @@ public abstract class GameObject extends GuardedObject {
         items.add(item);
     }
 
-    public void addItem(GameObject ... items){
+    public void addItems(GameObject ... items){
         for (GameObject item : items){
              this.items.add(item);
         }

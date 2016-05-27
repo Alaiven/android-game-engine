@@ -1,42 +1,60 @@
 package com.wp.androidgameengine.engine.objects;
 
-import com.wp.androidgameengine.engine.watchdog.GuardedObject;
+import com.wp.androidgameengine.engine.threads.ThreadCommunicator;
 
 /**
- * Created by Rafał on 19.05.2016.
+ * Created by Rafał on 27.05.2016.
  */
-public class Layer extends GuardedObject {
+public abstract class Layer extends GameObject {
     private int layerID;
     private float deviceWidth;
     private float deviceHeight;
     private float layerWidth;
     private float layerHeight;
-    private Texture textures[];
-    private Texture sampleTexture;
-    private Boolean dynamicLayerFlag;
-    private int texturesCount;
+    private TextureLayer textures[];
+    private TextureLayer sampleTexture;
+    private float pxMS;
 
-    public Layer(int layerID, float deviceWidth, float deviceHeight, Texture[] textures, Boolean dynamicLayerFlag) {
-        super();
+    // px/ms
+    public Layer(int layerID, float deviceWidth, float deviceHeight, float layerWidth, float layerHeight, TextureLayer[] textures, float pxMS) {
         this.layerID = layerID;
         this.deviceWidth = deviceWidth;
         this.deviceHeight = deviceHeight;
+        this.layerWidth = layerWidth;
+        this.layerHeight = layerHeight;
         this.textures = textures;
-        this.dynamicLayerFlag = dynamicLayerFlag;
-
+        this.pxMS = pxMS;
         sampleTexture = textures[0];
         layerWidth = deviceWidth + 4*sampleTexture.getWidth();
         layerHeight = sampleTexture.getHeight();
-
-        //texturesCountFunction(layerWidth,sampleTexture.getWidth());
-
     }
-    /*
-    private float texturesCountFunction(float layerWidth, float textureWidth){
-        Roun
-        return layerWidth/textureWidth
+
+    public float getPxMS() {
+        return pxMS;
     }
-    */
+
+    public void setPxMS(float pxMS) {
+        this.pxMS = pxMS;
+    }
+
+    @Override
+    protected abstract void onUpdate(long timeDelta, ThreadCommunicator tc);
+
+    public Texture[] getTextures() {
+        return textures;
+    }
+
+    public void setTextures(TextureLayer[] textures) {
+        this.textures = textures;
+    }
+
+    public Texture getSampleTexture() {
+        return sampleTexture;
+    }
+
+    public void setSampleTexture(TextureLayer sampleTexture) {
+        this.sampleTexture = sampleTexture;
+    }
 
     public int getLayerID() {
         return layerID;
@@ -76,28 +94,5 @@ public class Layer extends GuardedObject {
 
     public void setLayerHeight(float layerHeight) {
         this.layerHeight = layerHeight;
-    }
-
-    public Texture[] getTextures() {
-        return textures;
-    }
-
-    public void setTextures(Texture[] textures) {
-        this.textures = textures;
-    }
-
-    public Texture getSampleTexture() {
-        return sampleTexture;
-    }
-
-    public void setSampleTexture(Texture sampleTexture) {
-        this.sampleTexture = sampleTexture;
-    }
-    public Boolean getDynamicLayerFlag() {
-        return dynamicLayerFlag;
-    }
-
-    public void setDynamicLayerFlag(Boolean dynamicLayerFlag) {
-        this.dynamicLayerFlag = dynamicLayerFlag;
     }
 }
