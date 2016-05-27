@@ -30,6 +30,8 @@ public abstract class BaseThread extends GuardedObject implements Runnable {
         super();
     }
 
+    public long lastTime;
+
     @Override
     public void run(){
         while(!stop && !pause){
@@ -39,12 +41,17 @@ public abstract class BaseThread extends GuardedObject implements Runnable {
                 e.printStackTrace();
             }
             if(this.enabled){
-                this.doLoopAction();
+
+                long currentTime = System.currentTimeMillis();
+
+                this.doLoopAction(currentTime - lastTime);
+
+                lastTime = currentTime;
             }
         }
     }
 
-    public abstract void doLoopAction();
+    public abstract void doLoopAction(long timeDelta);
 
     public void onPause(){
         pause = true;

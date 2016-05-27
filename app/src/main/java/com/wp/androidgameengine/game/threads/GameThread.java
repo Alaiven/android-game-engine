@@ -16,7 +16,7 @@ public class GameThread extends BaseThread {
     }
 
     @Override
-    public void doLoopAction() {
+    public void doLoopAction(long timeDelta) {
 
         if (threadCommunicator.IsFrameConsumed()) {
 
