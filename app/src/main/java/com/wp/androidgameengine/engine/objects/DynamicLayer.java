@@ -28,7 +28,7 @@ public class DynamicLayer extends Layer {
     }
 
 
-
+    //TODO PRZEROBIC NA O(1)
     private TextureLayer getNextTexture(){
 
         TextureLayer resultTexture = null;
