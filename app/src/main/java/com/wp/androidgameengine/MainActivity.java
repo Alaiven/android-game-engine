@@ -1,30 +1,29 @@
 package com.wp.androidgameengine;
 
+import android.app.Activity;
 import android.app.ActivityManager;
 import android.content.Context;
 import android.content.pm.ConfigurationInfo;
 import android.media.AudioManager;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.util.Log;
 
-import com.wp.androidgameengine.engine.objects.Sound;
-import com.wp.androidgameengine.engine.renderer.MainRenderer;
-import com.wp.androidgameengine.engine.services.SoundService;
-import com.wp.androidgameengine.engine.surface.MainSurfaceView;
+import com.wp.androidgameengine.engine.objects.device.DeviceInfo;
 import com.wp.androidgameengine.game.Game;
-import com.wp.androidgameengine.game.threads.GameThread;
-import com.wp.androidgameengine.engine.threads.ThreadCommunicator;
 import com.wp.androidgameengine.engine.watchdog.GuardedObject;
-import com.wp.androidgameengine.engine.watchdog.collections.GuardedArrayList;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends Activity {
 
     private Game game;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
+
+        DeviceInfo di = new DeviceInfo(displayMetrics.widthPixels, displayMetrics.heightPixels);
 
         setVolumeControlStream(AudioManager.STREAM_MUSIC);
 
@@ -33,17 +32,19 @@ public class MainActivity extends AppCompatActivity {
 
         boolean supportES2 = (info.reqGlEsVersion >= 0x20000);
 
+
+
         //boolean supportES2 = true; //FOR EMULATOR!
 
         if(supportES2){
 
-            game = new Game(this);
+            game = new Game(this, di);
 
             this.setContentView(game.getView());
 
             game.init();
 
-            GuardedObject.setIsActive(false);
+            GuardedObject.setIsActive(true);
 
             game.start();
 
@@ -70,4 +71,5 @@ public class MainActivity extends AppCompatActivity {
         super.onDestroy();
         game.onDestroy();
     }
+
 }

@@ -3,22 +3,27 @@ package com.wp.androidgameengine.engine.objects;
 import android.content.Context;
 import android.opengl.GLSurfaceView;
 
-import com.wp.androidgameengine.R;
 import com.wp.androidgameengine.engine.exceptions.NotLoadedException;
 import com.wp.androidgameengine.engine.renderer.MainRenderer;
 import com.wp.androidgameengine.engine.services.SoundService;
-import com.wp.androidgameengine.engine.surface.MainSurfaceView;
+import com.wp.androidgameengine.engine.renderer.MainSurfaceView;
 import com.wp.androidgameengine.engine.threads.BaseThread;
 import com.wp.androidgameengine.engine.threads.ThreadCommunicator;
 import com.wp.androidgameengine.engine.watchdog.GuardedObject;
-import com.wp.androidgameengine.engine.watchdog.collections.GuardedArrayList;
 
 import java.util.ArrayList;
 
-/**
- * Created by maciek on 19.05.16.
- */
 public abstract class BaseGame extends GuardedObject {
+
+    {
+        rootObject = new GameObject() {
+            @Override
+            protected void onUpdate(long timeDelta, ThreadCommunicator tc) {
+                update(timeDelta, tc);
+            }
+        };
+    }
+
 
     protected Context context;
     protected ThreadCommunicator threadCommunicator;
@@ -28,6 +33,11 @@ public abstract class BaseGame extends GuardedObject {
     private MainRenderer renderer;
     private SoundService soundService;
     private MainSurfaceView mainSurfaceView;
+    protected final GameObject rootObject;
+
+    public GameObject getRootObject(){
+        return rootObject;
+    }
 
     public MainRenderer getRenderer() {
         return renderer;
@@ -43,6 +53,7 @@ public abstract class BaseGame extends GuardedObject {
 
     public void setGameThread(BaseThread gameThread) {
         this.gameThread = gameThread;
+        gameThread.setSurfaceView(mainSurfaceView);
         gameThread.setThreadCommunicator(threadCommunicator);
     }
 
@@ -56,8 +67,8 @@ public abstract class BaseGame extends GuardedObject {
 
         mainSurfaceView = new MainSurfaceView(context);
         mainSurfaceView.setEGLContextClientVersion(2);
-        //mainSurfaceView.setRenderMode(GLSurfaceView.RENDERMODE_CONTINUOUSLY);
         mainSurfaceView.setRenderer(renderer);
+        mainSurfaceView.setRenderMode(GLSurfaceView.RENDERMODE_WHEN_DIRTY);
     }
 
     protected void loadResources(ArrayList<Integer> textureList, ArrayList<Integer> soundList){

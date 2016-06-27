@@ -1,18 +1,17 @@
 package com.wp.androidgameengine.engine.threads;
 
-import com.wp.androidgameengine.engine.threads.ThreadCommunicator;
+import android.opengl.GLSurfaceView;
+
 import com.wp.androidgameengine.engine.watchdog.GuardedObject;
 
-/**
- * Created by maciek on 20.04.16.
- */
 public abstract class BaseThread extends GuardedObject implements Runnable {
-
 
     protected ThreadCommunicator threadCommunicator;
     private boolean enabled = true;
     private boolean stop = false;
     private boolean pause = false;
+    private GLSurfaceView surfaceView;
+
 
     public void setThreadCommunicator(ThreadCommunicator threadCommunicator) {
         this.threadCommunicator = threadCommunicator;
@@ -30,7 +29,7 @@ public abstract class BaseThread extends GuardedObject implements Runnable {
         super();
     }
 
-    public long lastTime;
+    public long lastTime = 0;
 
     @Override
     public void run(){
@@ -40,14 +39,15 @@ public abstract class BaseThread extends GuardedObject implements Runnable {
             }catch (InterruptedException e){
                 e.printStackTrace();
             }
-            if(this.enabled){
 
-                long currentTime = System.currentTimeMillis();
+            long currentTime = System.currentTimeMillis();
 
+            if(this.enabled && lastTime != 0){
                 this.doLoopAction(currentTime - lastTime);
-
-                lastTime = currentTime;
+                surfaceView.requestRender();
             }
+
+            lastTime = currentTime;
         }
     }
 
@@ -62,4 +62,7 @@ public abstract class BaseThread extends GuardedObject implements Runnable {
     }
 
 
+    public void setSurfaceView(GLSurfaceView surfaceView) {
+        this.surfaceView = surfaceView;
+    }
 }

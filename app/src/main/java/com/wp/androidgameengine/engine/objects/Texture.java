@@ -2,16 +2,11 @@ package com.wp.androidgameengine.engine.objects;
 
 import com.wp.androidgameengine.engine.watchdog.GuardedObject;
 
-/**
- * Created by maciek on 20.04.16.
- *
- * Dummy object for further development, aimed for storing data needed for rendering.
- */
 public class Texture extends GuardedObject {
     private float x;
     private float y;
-    private float width;
-    private float height;
+    private int width;
+    private int height;
     private int textureId;
 
     public float getX() {
@@ -30,19 +25,19 @@ public class Texture extends GuardedObject {
         this.y = y;
     }
 
-    public float getWidth() {
+    public int getWidth() {
         return width;
     }
 
-    public void setWidth(float width) {
+    public void setWidth(int width) {
         this.width = width;
     }
 
-    public float getHeight() {
+    public int getHeight() {
         return height;
     }
 
-    public void setHeight(float height) {
+    public void setHeight(int height) {
         this.height = height;
     }
 
@@ -54,7 +49,7 @@ public class Texture extends GuardedObject {
         this.textureId = textureId;
     }
 
-    public Texture(float x, float y, float width, float height, int textureId) {
+    public Texture(float x, float y, int width, int height, int textureId) {
         super();
         this.x = x;
         this.y = y;

@@ -26,13 +26,6 @@ public class GameThread extends BaseThread {
             threadCommunicator.setSwappingFlag(false);
 
             this.rootObject.update(timeDelta, threadCommunicator);
-
-            for (int i = 0; i < 100; i++) {
-                Texture ro = new Texture((float)Math.random() * 400, (float)Math.random() * 400, 32, 32, R.drawable.dragon);
-                Texture ro1 = new Texture((float)Math.random() * 400, (float)Math.random() * 400, 32, 32, R.drawable.back);
-                threadCommunicator.Produce(ro);
-                threadCommunicator.Produce(ro1);
-            }
         }
     }
 }

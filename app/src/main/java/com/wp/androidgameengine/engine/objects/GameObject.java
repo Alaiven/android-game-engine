@@ -4,9 +4,15 @@ import com.wp.androidgameengine.engine.threads.ThreadCommunicator;
 import com.wp.androidgameengine.engine.watchdog.GuardedObject;
 import com.wp.androidgameengine.engine.watchdog.collections.GuardedArrayList;
 
+import java.util.Collections;
+
 public abstract class GameObject extends GuardedObject {
 
-    protected GuardedArrayList<GameObject> items;
+    {
+        items = new GuardedArrayList<>();
+    }
+
+    private GuardedArrayList<GameObject> items;
 
     public GuardedArrayList<GameObject> getItems() {
         return items;
@@ -16,21 +22,24 @@ public abstract class GameObject extends GuardedObject {
         items.add(item);
     }
 
+    public void addItemOnIndex(int index, GameObject item){
+        items.add(index, item);
+    }
+
     public void addItems(GameObject ... items){
-        for (GameObject item : items){
-             this.items.add(item);
-        }
+        Collections.addAll(this.items, items);
     }
 
     public GameObject(){
         super();
-        items = new GuardedArrayList<>();
     }
 
     public void update(long timeDelta, ThreadCommunicator tc){
-        for (GameObject go: items) {
-            go.onUpdate(timeDelta, tc);
-            go.update(timeDelta, tc);
+        if(timeDelta != 0) {
+            for (GameObject go : items) {
+                go.onUpdate(timeDelta, tc);
+                go.update(timeDelta, tc);
+            }
         }
     }
 

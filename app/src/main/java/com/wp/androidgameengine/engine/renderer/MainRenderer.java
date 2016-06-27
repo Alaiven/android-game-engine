@@ -1,6 +1,5 @@
 package com.wp.androidgameengine.engine.renderer;
 
-import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -8,16 +7,15 @@ import android.opengl.GLES20;
 import android.opengl.GLSurfaceView;
 import android.opengl.GLUtils;
 import android.util.Log;
+import android.util.SparseIntArray;
 
 import com.wp.androidgameengine.engine.objects.Texture;
 import com.wp.androidgameengine.engine.threads.ThreadCommunicator;
-import com.wp.androidgameengine.engine.watchdog.collections.GuardedArrayList;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
@@ -43,16 +41,31 @@ public class MainRenderer implements GLSurfaceView.Renderer {
     public MainRenderer(ThreadCommunicator tc, Context c) {
         this.tc = tc;
         this.context = c;
-        textureDictionary = new HashMap<>();
+        textureDictionary = new SparseIntArray();
     }
 
     private ArrayList<Integer> textureInitializationList;
 
     //Dictionary R.id -> texture id
-    private final HashMap<Integer, Integer> textureDictionary;
+    private final SparseIntArray textureDictionary;
 
 
-    //Texture pre initialization. Textures will be loaded accirdingly in onSurfaceCreated
+    private final float[] textureVertexData =
+            {
+                    0f, 0f,  //V1
+                    0f, 0f,  //Texture coordinate for V1
+
+                    0f, 0f,  //V2
+                    0f, 1f,  //Texture coordinate for V2
+
+                    0f, 0f,  //V3
+                    1f, 0f,  //Texture coordinate for V3
+
+                    0f, 0f,  //V4
+                    1f, 1f   //Texture coordinate for V4
+            };
+
+    //Texture pre initialization. Textures will be loaded accordingly in onSurfaceCreated
     public void init(ArrayList<Integer> textureInitializationList){
         this.textureInitializationList = textureInitializationList;
         this.initialized = true;
@@ -105,7 +118,13 @@ public class MainRenderer implements GLSurfaceView.Renderer {
         GLES20.glEnable(GLES20.GL_BLEND);
     }
 
-    Texture ro = null;
+    private Texture ro = null;
+
+    private int textureHandle;
+    private int i;
+    private int aPosition;
+    private int aTexPos;
+    private final FloatBuffer textureBuffer = ByteBuffer.allocateDirect(textureVertexData.length * FLOAT_SIZE).order(ByteOrder.nativeOrder()).asFloatBuffer();
 
     @Override
     public void onDrawFrame(GL10 gl) {
@@ -113,7 +132,7 @@ public class MainRenderer implements GLSurfaceView.Renderer {
 
         tc.SwapBuffers();
 
-        int i = 0;
+        i = 0;
 
         while(!tc.IsConsumeEmpty()) {
             ro = tc.Consume();
@@ -123,8 +142,8 @@ public class MainRenderer implements GLSurfaceView.Renderer {
             }
 
             // get the position of our attributes
-            int aPosition = GLES20.glGetAttribLocation(programHandle, "aPosition");
-            int aTexPos = GLES20.glGetAttribLocation(programHandle, "aTexPos");
+            aPosition = GLES20.glGetAttribLocation(programHandle, "aPosition");
+            aTexPos = GLES20.glGetAttribLocation(programHandle, "aTexPos");
 
             // Ok, now is the FUN part.
             // First of all, our image is a rectangle right? but in OpenGL, we can only draw
@@ -138,24 +157,23 @@ public class MainRenderer implements GLSurfaceView.Renderer {
             // are ALWAYS 0,0 on bottom-left and 1,1 on top-right. Take a look at the values
             // used and you will understand it easily. If not, mess a little bit with the values
             // and take a look at the result.
-            float[] data =
-                    {
-                            ro.getX(), ro.getY(),  //V1
-                            0f, 0f,     //Texture coordinate for V1
 
-                            ro.getX(), ro.getY() + ro.getWidth(),  //V2
-                            0f, 1f,
 
-                            ro.getX() + ro.getHeight(), ro.getY(), //V3
-                            1f, 0f,
+            textureVertexData[0] = ro.getX();
+            textureVertexData[1] = ro.getY();
 
-                            ro.getX() + ro.getHeight(), ro.getY() + ro.getWidth(),  //V4
-                            1f, 1f
-                    };
+            textureVertexData[4] = ro.getX();
+            textureVertexData[5] = ro.getY() + ro.getWidth();
+
+            textureVertexData[8] = ro.getX() + ro.getHeight();
+            textureVertexData[9] = ro.getY();
+
+            textureVertexData[12] = ro.getX() + ro.getHeight();
+            textureVertexData[13] = ro.getY() + ro.getWidth();
 
             GLES20.glActiveTexture(GLES20.GL_TEXTURE0);
 
-            int textureHandle =  this.textureDictionary.get(ro.getTextureId());
+            textureHandle =  this.textureDictionary.get(ro.getTextureId());
 
             // Bind the texture to this unit.
             GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, textureHandle);
@@ -164,17 +182,18 @@ public class MainRenderer implements GLSurfaceView.Renderer {
             GLES20.glUniform1i(textureHandle, 0);
 
             // Again, a FloatBuffer will be used to pass the values
-            FloatBuffer b = ByteBuffer.allocateDirect(data.length * FLOAT_SIZE).order(ByteOrder.nativeOrder()).asFloatBuffer();
-            b.put(data);
+            textureBuffer.clear();
+            textureBuffer.position(0);
+            textureBuffer.put(textureVertexData);
 
             // Position of our image
-            b.position(POSITION_OFFSET);
-            GLES20.glVertexAttribPointer(aPosition, POSITION_SIZE, GLES20.GL_FLOAT, false, TOTAL_SIZE * FLOAT_SIZE, b);
+            textureBuffer.position(POSITION_OFFSET);
+            GLES20.glVertexAttribPointer(aPosition, POSITION_SIZE, GLES20.GL_FLOAT, false, TOTAL_SIZE * FLOAT_SIZE, textureBuffer);
             GLES20.glEnableVertexAttribArray(aPosition);
 
             // Positions of the texture
-            b.position(TEXTURE_OFFSET);
-            GLES20.glVertexAttribPointer(aTexPos, TEXTURE_SIZE, GLES20.GL_FLOAT, false, TOTAL_SIZE * FLOAT_SIZE, b);
+            textureBuffer.position(TEXTURE_OFFSET);
+            GLES20.glVertexAttribPointer(aTexPos, TEXTURE_SIZE, GLES20.GL_FLOAT, false, TOTAL_SIZE * FLOAT_SIZE, textureBuffer);
             GLES20.glEnableVertexAttribArray(aTexPos);
 
             GLES20.glDrawArrays(GLES20.GL_TRIANGLE_STRIP, 0, 4);
@@ -230,7 +249,7 @@ public class MainRenderer implements GLSurfaceView.Renderer {
             return handle;
     }
 
-    public int loadTexture(final int resourceId){
+    private int loadTexture(final int resourceId){
         final int[] textureHandle = new int[1];
 
         GLES20.glGenTextures(1, textureHandle, 0);
@@ -265,7 +284,7 @@ public class MainRenderer implements GLSurfaceView.Renderer {
         return textureHandle[0];
     }
 
-    public void setup(){
+    private void setup(){
         // make sure there's nothing already created
         tearDown();
 

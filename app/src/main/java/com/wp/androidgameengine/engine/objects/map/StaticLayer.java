@@ -1,4 +1,4 @@
-package com.wp.androidgameengine.engine.objects;
+package com.wp.androidgameengine.engine.objects.map;
 
 import com.wp.androidgameengine.engine.threads.ThreadCommunicator;
 import com.wp.androidgameengine.engine.watchdog.collections.GuardedLinkedList;
@@ -10,10 +10,10 @@ import java.util.Queue;
  */
 public class StaticLayer extends Layer {
 
-    public Queue<TextureLayer> myQueue = new GuardedLinkedList<TextureLayer>();
+    public Queue<MapTexture> myQueue = new GuardedLinkedList<MapTexture>();
 
-    public StaticLayer(int layerID, float deviceWidth, float deviceHeight, float layerWidth, float layerHeight, TextureLayer[] textures, float pxMS) {
-        super(layerID, deviceWidth, deviceHeight, layerWidth, layerHeight, textures, pxMS);
+    public StaticLayer(int layerID, MapTexture[] textures, float pxMS) {
+        super(layerID, 0,0, textures, pxMS);
 
         for(int i=0; i <textures.length; i++)
             myQueue.offer(textures[i]);
