@@ -1,11 +1,53 @@
 package com.wp.androidgameengine.engine.objects.components.animation;
 
-import com.wp.androidgameengine.engine.events.Events;
 import com.wp.androidgameengine.engine.objects.components.IComponent;
 import com.wp.androidgameengine.engine.objects.components.IComposable;
 import com.wp.androidgameengine.engine.watchdog.GuardedObject;
 
 public class Animation extends GuardedObject implements IComponent {
+
+    /*
+
+    @startuml
+
+    interface IAnimationFactory{
+        #create(animationFrames:AnimationFrame[])
+    }
+
+    class AnimationFactory{
+        +create(animationFrames:AnimationFrame[])
+    }
+
+
+    interface IComponent{
+    }
+
+    class Animation{
+    }
+
+    class SteadyAnimation{
+    }
+
+
+
+
+    IComponent <|-- Animation
+    IComponent <|-- SteadyAnimation
+
+    IAnimationFactory <|-- AnimationFactory
+
+    IAnimationFactory ..> IComponent : use
+
+    AnimationFactory ..> Animation : create
+
+    AnimationFactory ..> SteadyAnimation : create
+
+    @enduml
+
+
+     */
+
+
 
     private IAnimable animable;
 
@@ -19,7 +61,7 @@ public class Animation extends GuardedObject implements IComponent {
 
     private int acturalDuration;
 
-    public Animation(AnimationFrame[] animationFrames){
+    Animation(AnimationFrame[] animationFrames){
         super();
         this.animationFrames = animationFrames;
         this.frameCount = animationFrames.length;
@@ -29,9 +71,10 @@ public class Animation extends GuardedObject implements IComponent {
         resetDuration();
     }
 
-
     @Override
-    public void perform(long timeDelta, Events e) {
+    public void perform(IComposable composable, long timeDelta) {
+        animable = (IAnimable)composable;
+
         acturalDuration -= timeDelta;
 
         if(acturalDuration <= 0){
@@ -43,8 +86,15 @@ public class Animation extends GuardedObject implements IComponent {
     }
 
     @Override
-    public void setComposable(IComposable composable) {
-        animable = (IAnimable)composable;
+    public IComponent duplicate() {
+
+        AnimationFrame[] arr = new AnimationFrame[animationFrames.length];
+
+        for (int i = 0; i < animationFrames.length; i++) {
+            arr[i] = animationFrames[i].duplicate();
+        }
+
+        return new Animation(arr);
     }
 
     private void resetDuration(){

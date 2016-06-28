@@ -14,6 +14,21 @@ import java.util.ArrayList;
 import java.util.Dictionary;
 import java.util.HashMap;
 
+ /*
+
+    @startuml
+
+    class SoundService{
+        -current : SoundService
+        -SoundService()
+        +getInstance()
+    }
+
+    @enduml
+
+    */
+
+
 public class SoundService extends GuardedObject {
 
     private static SoundService current;

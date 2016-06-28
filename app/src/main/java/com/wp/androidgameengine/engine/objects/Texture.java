@@ -3,33 +3,36 @@ package com.wp.androidgameengine.engine.objects;
 import com.wp.androidgameengine.engine.watchdog.GuardedObject;
 
 public class Texture extends GuardedObject {
-    private Position position;
-    private int width;
-    private int height;
+    private final Vec2 dimensions;
+    private Vec2 position;
     private int textureId;
 
-    public Position getPosition() {
+    public Vec2 getPosition() {
         return position;
     }
 
-    public void setPosition(Position position) {
+    public void setPosition(Vec2 position) {
         this.position = position;
     }
 
-    public int getWidth() {
-        return width;
+    public float getWidth() {
+        return dimensions.getX();
     }
 
-    public void setWidth(int width) {
-        this.width = width;
+    public void setWidth(float width) {
+        this.dimensions.setX(width);
     }
 
-    public int getHeight() {
-        return height;
+    public float getHeight() {
+        return this.dimensions.getY();
     }
 
     public void setHeight(int height) {
-        this.height = height;
+        this.dimensions.setY(height);
+    }
+
+    public Vec2 getDimensions() {
+        return dimensions;
     }
 
     public int getTextureId() {
@@ -40,11 +43,10 @@ public class Texture extends GuardedObject {
         this.textureId = textureId;
     }
 
-    public Texture(Position p, int width, int height, int textureId) {
+    public Texture(Vec2 position, Vec2 dimensions, int textureId) {
         super();
-        this.position = p;
-        this.width = width;
-        this.height = height;
+        this.position = position;
+        this.dimensions = dimensions;
         this.textureId = textureId;
     }
 }

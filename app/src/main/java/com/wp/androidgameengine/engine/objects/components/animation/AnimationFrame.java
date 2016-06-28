@@ -1,24 +1,28 @@
 package com.wp.androidgameengine.engine.objects.components.animation;
 
-import com.wp.androidgameengine.engine.objects.Position;
 import com.wp.androidgameengine.engine.objects.Texture;
+import com.wp.androidgameengine.engine.objects.Vec2;
 
 
 public class AnimationFrame extends Texture {
 
     private final int duration;
 
-    public AnimationFrame(int width, int height, int textureId, int duration) {
-        super(new Position(0, 0), width, height, textureId);
+    public AnimationFrame(Vec2 dimensions, int textureId, int duration) {
+        super(new Vec2(0, 0), dimensions, textureId);
 
         this.duration = duration;
     }
 
-    public int getDuration() {
+    int getDuration() {
         return duration;
     }
 
-    public Texture toTexture(){
+    Texture toTexture(){
         return this;
+    }
+
+    AnimationFrame duplicate(){
+        return new AnimationFrame(getDimensions().duplicate(), getTextureId(), getDuration());
     }
 }

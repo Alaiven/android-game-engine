@@ -9,8 +9,8 @@ import android.opengl.GLUtils;
 import android.util.Log;
 import android.util.SparseIntArray;
 
-import com.wp.androidgameengine.engine.objects.Position;
 import com.wp.androidgameengine.engine.objects.Texture;
+import com.wp.androidgameengine.engine.objects.Vec2;
 import com.wp.androidgameengine.engine.threads.ThreadCommunicator;
 
 import java.nio.ByteBuffer;
@@ -120,7 +120,7 @@ public class MainRenderer implements GLSurfaceView.Renderer {
     }
 
     private Texture ro = null;
-    private Position roPosition;
+    private Vec2 roPosition;
 
     private int textureHandle;
     private int i;
@@ -147,18 +147,6 @@ public class MainRenderer implements GLSurfaceView.Renderer {
             aPosition = GLES20.glGetAttribLocation(programHandle, "aPosition");
             aTexPos = GLES20.glGetAttribLocation(programHandle, "aTexPos");
 
-            // Ok, now is the FUN part.
-            // First of all, our image is a rectangle right? but in OpenGL, we can only draw
-            // triangles! To remedy that we will use 4 vertices (V1 to V4) and draw using
-            // the TRIANGLE_STRIP option. If you look closely to our positions, you will note
-            // that we're drawing a 'N' (or 'Z') shaped line1... and TRIANGLE_STRIP 'closes' the
-            // remaining GAP between the vertices, so we have a rectangle (or square)! Yay!
-            //
-            // Apart from V1 to V4, we also specify the position IN THE TEXTURE. Each vertex
-            // of our rectangle must relate to a position in the texture. The texture coordinates
-            // are ALWAYS 0,0 on bottom-left and 1,1 on top-right. Take a look at the values
-            // used and you will understand it easily. If not, mess a little bit with the values
-            // and take a look at the result.
 
             roPosition = ro.getPosition();
 

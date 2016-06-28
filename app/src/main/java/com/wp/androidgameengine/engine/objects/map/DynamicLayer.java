@@ -1,7 +1,6 @@
 package com.wp.androidgameengine.engine.objects.map;
 
-import com.wp.androidgameengine.engine.events.Events;
-import com.wp.androidgameengine.engine.objects.Position;
+import com.wp.androidgameengine.engine.objects.Vec2;
 import com.wp.androidgameengine.engine.objects.device.DeviceInfo;
 import com.wp.androidgameengine.engine.threads.ThreadCommunicator;
 import com.wp.androidgameengine.engine.watchdog.collections.GuardedLinkedList;
@@ -22,45 +21,44 @@ public class DynamicLayer extends Layer {
     private final DeviceInfo deviceInfo;
 
 
-    public DynamicLayer(DeviceInfo di, int layerID, int x, int y, MapTexture[] textures, float pxMS) {
-        super(layerID, x, y, textures, pxMS);
+    public DynamicLayer(DeviceInfo di, int layerID, Vec2 position, MapTexture[] textures, float pxMS) {
+        super(layerID, position, textures, pxMS);
 
         deviceInfo = di;
 
-        texturesOnScreen = deviceInfo.width / (int)textureWidth;
+        texturesOnScreen = deviceInfo.getWidth() / (int)textureWidth;
 
         setUp();
     }
 
-
     private void setUp(){
-        int posX = layerX - textureWidth * 2;
+        int posX = (int)(this.position.getX() - textureWidth * 2);
 
         for (int i = 0; i < texturesOnScreen + 4; i++) {
             MapTexture texture = getNextTexture();
-            layerQueue.offer(texture.clone(posX, layerY));
+            layerQueue.offer(texture.clone(new Vec2(posX, this.position.getY())));
             posX += textureWidth;
         }
     }
 
     private int texturesOffScreen;
     private float lastPosition;
-    private Position position;
+    private Vec2 texPosition;
 
     private void moveAndRender(float pixelsToMove, ThreadCommunicator tc) {
         texturesOffScreen = 0;
         lastPosition = 0;
 
         for(MapTexture tl : layerQueue){
-            position = tl.getPosition();
+            texPosition = tl.getPosition();
 
-            position.setX(position.getX() - pixelsToMove);
+            texPosition.setX(texPosition.getX() - pixelsToMove);
 
-            if(position.getX() <= 2 * -textureWidth){
+            if(texPosition.getX() <= 2 * -textureWidth){
                 texturesOffScreen++;
             }
 
-            lastPosition = position.getX();
+            lastPosition = texPosition.getX();
         }
 
         for (int i = 0; i < texturesOffScreen; i++) {
@@ -68,11 +66,11 @@ public class DynamicLayer extends Layer {
 
             MapTexture tl = layerQueue.poll();
 
-            position = tl.getPosition();
+            texPosition = tl.getPosition();
 
             tl.setTextureId(getNextTexture().getTextureId());
 
-            position.setX(lastPosition);
+            texPosition.setX(lastPosition);
 
             layerQueue.offer(tl);
         }
@@ -105,10 +103,8 @@ public class DynamicLayer extends Layer {
         return resultTexture;
     }
 
-
-
     @Override
-    protected void onUpdate(long timeDelta, ThreadCommunicator tc, Events e) {
+    protected void onUpdate(long timeDelta, ThreadCommunicator tc) {
             float pixelsToMove = pxMS * timeDelta;
             moveAndRender(pixelsToMove, tc);
     }
