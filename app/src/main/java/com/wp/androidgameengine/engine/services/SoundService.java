@@ -4,6 +4,7 @@ import android.content.Context;
 import android.media.AudioAttributes;
 import android.media.AudioManager;
 import android.media.SoundPool;
+import android.util.SparseIntArray;
 import android.widget.Toast;
 
 import com.wp.androidgameengine.engine.objects.Sound;
@@ -13,21 +14,19 @@ import java.util.ArrayList;
 import java.util.Dictionary;
 import java.util.HashMap;
 
-/**
- * Created by maciek on 19.05.16.
- */
 public class SoundService extends GuardedObject {
 
+    private static SoundService current;
+
     private final SoundPool sp;
-    private final Context context;
+    private static Context context;
 
-    private final HashMap<Integer, Integer> soundDictionary;
+    private final SparseIntArray soundDictionary;
 
-    public SoundService(Context c) {
+    private SoundService() {
         super();
-        context = c;
         sp = new SoundPool(10, AudioManager.STREAM_MUSIC, 0);
-        soundDictionary = new HashMap<>();
+        soundDictionary = new SparseIntArray();
     }
 
     public void init(ArrayList<Integer> sounds){
@@ -42,6 +41,17 @@ public class SoundService extends GuardedObject {
 
     public void playSound(Sound s){
         sp.play(soundDictionary.get(s.getSoundId()), 1, 1, 1, 0, 1.0f);
+    }
+
+    public static void setContext(Context c){
+        SoundService.context = c;
+    }
+
+    public static SoundService getInstance(){
+        if(current == null){
+            current = new SoundService();
+        }
+        return current;
     }
 
     public void onDestroy(){

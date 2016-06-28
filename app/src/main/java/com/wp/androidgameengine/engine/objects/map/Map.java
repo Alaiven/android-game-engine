@@ -1,5 +1,6 @@
 package com.wp.androidgameengine.engine.objects.map;
 
+import com.wp.androidgameengine.engine.events.Events;
 import com.wp.androidgameengine.engine.objects.GameObject;
 import com.wp.androidgameengine.engine.threads.ThreadCommunicator;
 
@@ -14,7 +15,7 @@ public class Map extends GameObject {
     }
 
     @Override
-    protected void onUpdate(long timeDelta, ThreadCommunicator tc) {
+    protected void onUpdate(long timeDelta, ThreadCommunicator tc, Events e) {
         //nic sie nie dzieje
     }
 }

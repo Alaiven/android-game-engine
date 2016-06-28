@@ -3,6 +3,7 @@ package com.wp.androidgameengine.engine.objects;
 import android.content.Context;
 import android.opengl.GLSurfaceView;
 
+import com.wp.androidgameengine.engine.events.Events;
 import com.wp.androidgameengine.engine.exceptions.NotLoadedException;
 import com.wp.androidgameengine.engine.renderer.MainRenderer;
 import com.wp.androidgameengine.engine.services.SoundService;
@@ -18,8 +19,8 @@ public abstract class BaseGame extends GuardedObject {
     {
         rootObject = new GameObject() {
             @Override
-            protected void onUpdate(long timeDelta, ThreadCommunicator tc) {
-                update(timeDelta, tc);
+            protected void onUpdate(long timeDelta, ThreadCommunicator tc, Events e) {
+                update(timeDelta, tc, e);
             }
         };
     }
@@ -63,7 +64,9 @@ public abstract class BaseGame extends GuardedObject {
         threadCommunicator = new ThreadCommunicator();
 
         renderer = new MainRenderer(threadCommunicator, context);
-        soundService = new SoundService(c);
+
+        SoundService.setContext(c);
+        soundService = SoundService.getInstance();
 
         mainSurfaceView = new MainSurfaceView(context);
         mainSurfaceView.setEGLContextClientVersion(2);

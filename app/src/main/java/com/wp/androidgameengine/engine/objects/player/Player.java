@@ -1,14 +1,17 @@
 package com.wp.androidgameengine.engine.objects.player;
 
 
+import com.wp.androidgameengine.engine.events.Events;
 import com.wp.androidgameengine.engine.objects.GameObject;
+import com.wp.androidgameengine.engine.objects.Position;
 import com.wp.androidgameengine.engine.objects.Texture;
 import com.wp.androidgameengine.engine.objects.components.animation.IAnimable;
 import com.wp.androidgameengine.engine.objects.components.IComponent;
+import com.wp.androidgameengine.engine.objects.components.physics.IMovable;
 import com.wp.androidgameengine.engine.threads.ThreadCommunicator;
 import com.wp.androidgameengine.engine.watchdog.collections.GuardedArrayList;
 
-public class Player extends GameObject implements IAnimable {
+public class Player extends GameObject implements IAnimable, IMovable {
 
     {
         components = new GuardedArrayList<>();
@@ -17,19 +20,18 @@ public class Player extends GameObject implements IAnimable {
     private final GuardedArrayList<IComponent> components;
     private Texture currentTexture;
 
-    private int x,y;
+    private Position position;
 
-    public Player(int x, int y){
+    public Player(Position p){
         super();
 
-        this.x = x;
-        this.y = y;
+        this.position = p;
     }
 
     @Override
-    protected void onUpdate(long timeDelta, ThreadCommunicator tc) {
+    protected void onUpdate(long timeDelta, ThreadCommunicator tc, Events e) {
         for (IComponent component: components) {
-            component.perform(timeDelta);
+            component.perform(timeDelta, e);
         }
 
         setTextureCoordinates();
@@ -38,8 +40,7 @@ public class Player extends GameObject implements IAnimable {
     }
 
     private void setTextureCoordinates() {
-        currentTexture.setX(x);
-        currentTexture.setY(y);
+        currentTexture.setPosition(position);
     }
 
     public void addComponent(IComponent component){
@@ -50,5 +51,21 @@ public class Player extends GameObject implements IAnimable {
     @Override
     public void setCurrentAnimationFrame(Texture texture) {
         currentTexture = texture;
+    }
+
+
+    @Override
+    public void setCurrentPosition(Position p) {
+        this.position = p;
+    }
+
+    @Override
+    public Position getPosition() {
+        return this.position;
+    }
+
+    @Override
+    public int getHeight() {
+        return 128;
     }
 }

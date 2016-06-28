@@ -1,5 +1,6 @@
 package com.wp.androidgameengine.engine.objects.components.animation;
 
+import com.wp.androidgameengine.engine.events.Events;
 import com.wp.androidgameengine.engine.objects.components.IComponent;
 import com.wp.androidgameengine.engine.objects.components.IComposable;
 import com.wp.androidgameengine.engine.watchdog.GuardedObject;
@@ -30,7 +31,7 @@ public class Animation extends GuardedObject implements IComponent {
 
 
     @Override
-    public void perform(long timeDelta) {
+    public void perform(long timeDelta, Events e) {
         acturalDuration -= timeDelta;
 
         if(acturalDuration <= 0){

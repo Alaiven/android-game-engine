@@ -9,6 +9,7 @@ import android.opengl.GLUtils;
 import android.util.Log;
 import android.util.SparseIntArray;
 
+import com.wp.androidgameengine.engine.objects.Position;
 import com.wp.androidgameengine.engine.objects.Texture;
 import com.wp.androidgameengine.engine.threads.ThreadCommunicator;
 
@@ -119,6 +120,7 @@ public class MainRenderer implements GLSurfaceView.Renderer {
     }
 
     private Texture ro = null;
+    private Position roPosition;
 
     private int textureHandle;
     private int i;
@@ -158,18 +160,19 @@ public class MainRenderer implements GLSurfaceView.Renderer {
             // used and you will understand it easily. If not, mess a little bit with the values
             // and take a look at the result.
 
+            roPosition = ro.getPosition();
 
-            textureVertexData[0] = ro.getX();
-            textureVertexData[1] = ro.getY();
+            textureVertexData[0] = roPosition.getX();
+            textureVertexData[1] = roPosition.getY();
 
-            textureVertexData[4] = ro.getX();
-            textureVertexData[5] = ro.getY() + ro.getWidth();
+            textureVertexData[4] = roPosition.getX();
+            textureVertexData[5] = roPosition.getY() + ro.getWidth();
 
-            textureVertexData[8] = ro.getX() + ro.getHeight();
-            textureVertexData[9] = ro.getY();
+            textureVertexData[8] = roPosition.getX() + ro.getHeight();
+            textureVertexData[9] = roPosition.getY();
 
-            textureVertexData[12] = ro.getX() + ro.getHeight();
-            textureVertexData[13] = ro.getY() + ro.getWidth();
+            textureVertexData[12] = roPosition.getX() + ro.getHeight();
+            textureVertexData[13] = roPosition.getY() + ro.getWidth();
 
             GLES20.glActiveTexture(GLES20.GL_TEXTURE0);
 

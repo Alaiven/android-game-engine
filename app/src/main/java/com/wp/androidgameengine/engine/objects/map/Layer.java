@@ -1,11 +1,9 @@
 package com.wp.androidgameengine.engine.objects.map;
 
+import com.wp.androidgameengine.engine.events.Events;
 import com.wp.androidgameengine.engine.objects.GameObject;
 import com.wp.androidgameengine.engine.threads.ThreadCommunicator;
 
-/**
- * Created by Rafał on 27.05.2016.
- */
 public abstract class Layer extends GameObject {
     private int layerID;
     private MapTexture sampleTexture;
@@ -28,7 +26,7 @@ public abstract class Layer extends GameObject {
     }
 
     @Override
-    protected abstract void onUpdate(long timeDelta, ThreadCommunicator tc);
+    protected abstract void onUpdate(long timeDelta, ThreadCommunicator tc, Events e);
 
     public int getLayerID() {
         return layerID;

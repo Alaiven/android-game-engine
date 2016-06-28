@@ -1,5 +1,7 @@
 package com.wp.androidgameengine.engine.objects.map;
 
+import com.wp.androidgameengine.engine.events.Events;
+import com.wp.androidgameengine.engine.objects.Position;
 import com.wp.androidgameengine.engine.objects.device.DeviceInfo;
 import com.wp.androidgameengine.engine.threads.ThreadCommunicator;
 import com.wp.androidgameengine.engine.watchdog.collections.GuardedLinkedList;
@@ -43,19 +45,22 @@ public class DynamicLayer extends Layer {
 
     private int texturesOffScreen;
     private float lastPosition;
+    private Position position;
 
     private void moveAndRender(float pixelsToMove, ThreadCommunicator tc) {
         texturesOffScreen = 0;
         lastPosition = 0;
 
         for(MapTexture tl : layerQueue){
-            tl.setX(tl.getX() - pixelsToMove);
+            position = tl.getPosition();
 
-            if(tl.getX() <= 2 * -textureWidth){
+            position.setX(position.getX() - pixelsToMove);
+
+            if(position.getX() <= 2 * -textureWidth){
                 texturesOffScreen++;
             }
 
-            lastPosition = tl.getX();
+            lastPosition = position.getX();
         }
 
         for (int i = 0; i < texturesOffScreen; i++) {
@@ -63,9 +68,11 @@ public class DynamicLayer extends Layer {
 
             MapTexture tl = layerQueue.poll();
 
+            position = tl.getPosition();
+
             tl.setTextureId(getNextTexture().getTextureId());
 
-            tl.setX(lastPosition);
+            position.setX(lastPosition);
 
             layerQueue.offer(tl);
         }
@@ -101,7 +108,7 @@ public class DynamicLayer extends Layer {
 
 
     @Override
-    protected void onUpdate(long timeDelta, ThreadCommunicator tc) {
+    protected void onUpdate(long timeDelta, ThreadCommunicator tc, Events e) {
             float pixelsToMove = pxMS * timeDelta;
             moveAndRender(pixelsToMove, tc);
     }

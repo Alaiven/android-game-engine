@@ -2,9 +2,6 @@ package com.wp.androidgameengine.engine.objects;
 
 import com.wp.androidgameengine.engine.watchdog.GuardedObject;
 
-/**
- * Created by maciek on 19.05.16.
- */
 public class Sound extends GuardedObject {
     private int soundId;
 

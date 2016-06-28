@@ -1,5 +1,6 @@
 package com.wp.androidgameengine.engine.objects.map;
 
+import com.wp.androidgameengine.engine.events.Events;
 import com.wp.androidgameengine.engine.threads.ThreadCommunicator;
 import com.wp.androidgameengine.engine.watchdog.collections.GuardedLinkedList;
 
@@ -20,7 +21,7 @@ public class StaticLayer extends Layer {
     }
 
     @Override
-    protected void onUpdate(long timeDelta, ThreadCommunicator tc) {
+    protected void onUpdate(long timeDelta, ThreadCommunicator tc, Events e) {
 
     }
 }

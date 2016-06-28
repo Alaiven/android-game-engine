@@ -1,5 +1,6 @@
 package com.wp.androidgameengine.engine.objects;
 
+import com.wp.androidgameengine.engine.events.Events;
 import com.wp.androidgameengine.engine.threads.ThreadCommunicator;
 import com.wp.androidgameengine.engine.watchdog.GuardedObject;
 import com.wp.androidgameengine.engine.watchdog.collections.GuardedArrayList;
@@ -34,15 +35,13 @@ public abstract class GameObject extends GuardedObject {
         super();
     }
 
-    public void update(long timeDelta, ThreadCommunicator tc){
-        if(timeDelta != 0) {
+    public void update(long timeDelta, ThreadCommunicator tc, Events e){
             for (GameObject go : items) {
-                go.onUpdate(timeDelta, tc);
-                go.update(timeDelta, tc);
+                go.onUpdate(timeDelta, tc, e);
+                go.update(timeDelta, tc, e);
             }
-        }
     }
 
-    protected abstract void onUpdate(long timeDelta, ThreadCommunicator tc);
+    protected abstract void onUpdate(long timeDelta, ThreadCommunicator tc, Events e);
 
 }
